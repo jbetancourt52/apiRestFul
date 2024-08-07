@@ -50,6 +50,7 @@ class CategoryController extends Controller
     {
         $category->update($request->all());
         return response()->json($category, 200);
+
     }
 
     public function destroy(Category $category)
