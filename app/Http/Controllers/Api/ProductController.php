@@ -34,6 +34,19 @@ class ProductController extends Controller
             $query->where('id_category', $request->input('id_category'));
         }
 
+         // Ordenamiento
+        $sortBy = $request->input('sort_by', 'created_at'); // Campo por el cual ordenar, con valor predeterminado 'created_at'
+        $sortOrder = $request->input('sort_order', 'asc'); // Dirección del orden, con valor predeterminado 'asc'
+
+        // Validar que el campo de ordenamiento sea válido
+        $validSortBy = ['name', 'cost', 'quantity', 'id_categoria', 'created_at']; // Campos válidos para ordenar
+        if (in_array($sortBy, $validSortBy)) {
+            $query->orderBy($sortBy, $sortOrder);
+        } else {
+            // Ordenar por un campo predeterminado si el campo solicitado no es válido
+            $query->orderBy('created_at', 'desc');
+        }
+
         $perPage = $request->input('per_page', 10); // Número de resultados por página, con valor predeterminado de 10
         $products = $query->paginate($perPage);
 
