@@ -46,10 +46,33 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $category->update($request->all());
-        return response()->json($category, 200);
+        // $category->update($request->all());
+        // return response()->json($category, 200);
+
+        try {
+                // Validar los datos recibidos
+            $request->validate([
+                'name' => 'required|string|max:255'
+            ]);
+
+            // Buscar el producto por ID
+            $category = Category::findOrFail($id);
+
+            // Actualizar los datos del producto
+            $category->update([
+                'name' => $request->name
+            ]);
+
+            // Devolver la respuesta con el producto actualizado
+            return ApiResponse::success($category, 'Categoria actualizada exitosamente', 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return ApiResponse::error('Error de validación', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Error al actualizar la categoria', ['exception' => $e->getMessage()]);
+        }
 
     }
 

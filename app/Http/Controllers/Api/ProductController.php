@@ -9,17 +9,35 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // return Product::all();
-        // return response()->json($producto);
 
-        try {
-            $products = Product::all();
-            return ApiResponse::success($products);
-        } catch (\Exception $e) {
-            return ApiResponse::error('Error al obtener los productos', ['exception' => $e->getMessage()]);
+        //--CONSULTA TODO
+            // try {
+            //     $products = Product::all();
+            //     return ApiResponse::success($products);
+            // } catch (\Exception $e) {
+            //     return ApiResponse::error('Error al obtener los productos', ['exception' => $e->getMessage()]);
+            // }
+        //--
+
+        //--CONSULTA PAGINADA
+        $query = Product::query();
+
+        //filtro por nombre
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
+    
+        // Filtrar por categoría
+        if ($request->has('id_category')) {
+            $query->where('id_category', $request->input('id_category'));
+        }
+
+        $perPage = $request->input('per_page', 10); // Número de resultados por página, con valor predeterminado de 10
+        $products = $query->paginate($perPage);
+
+        return ApiResponse::success($products, 'Productos listados exitosamente', 200);
     }
 
     public function store(Request $request)
@@ -85,7 +103,7 @@ class ProductController extends Controller
               'description' => $request->description,
               'cost' => $request->cost,
               'quantity' => $request->quantity,
-              'id_categoria' => $request->id_category,
+              'id_category' => $request->id_category,
               'status' => $request->status,
               'date' => $request->date
           ]);
