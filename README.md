@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## API RESTful para Gestión de Productos y Categorías en Laravel
+## API RESTful para Gestión de Productos y Categorías en Laravel 🤖
 
 Este proyecto es una API RESTful desarrollada con Laravel, diseñada para facilitar la gestión de productos y categorías en una aplicación. La API permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre dos entidades principales: productos y categorías.
 
@@ -32,27 +32,27 @@ A continuación se detallan los endpoints disponibles en la API, organizados por
 
 | Método HTTP | Endpoint                  | Descripción                                     |
 |-------------|---------------------------|-------------------------------------------------|
-| GET         | `/api/products`           | Obtiene una lista de productos con opciones de filtrado y paginación |
-| GET         | `/api/products/{id}`       | Obtiene un producto específico por ID           |
-| POST        | `/api/products`           | Crea un nuevo producto                          |
-| PUT         | `/api/products/{id}`       | Actualiza un producto por ID                   |
-| DELETE      | `/api/products/{id}`       | Elimina un producto por ID                     |
+| GET         | `/api/product`           | Obtiene una lista de productos con opciones de filtrado y paginación |
+| GET         | `/api/product/{id}`       | Obtiene un producto específico por ID           |
+| POST        | `/api/product`           | Crea un nuevo producto                          |
+| PUT         | `/api/product/{id}`       | Actualiza un producto por ID                   |
+| DELETE      | `/api/product/{id}`       | Elimina un producto por ID                     |
 
 ## Consultas Avanzadas para Productos
 
-El endpoint `/api/products` admite consultas avanzadas para personalizar la respuesta:
+El endpoint `/api/product` admite consultas avanzadas para personalizar la respuesta:
 
 ### Paginación
 
 Para obtener productos paginados, puedes utilizar los parámetros `page` y `per_page`:
 
-- **Ejemplo**: `/api/products?page=2&per_page=10`
+- **Ejemplo**: `/api/product?page=2&per_page=10`
 
 ### Filtros
 
 Puedes filtrar productos por nombre y categoría utilizando los parámetros `name` e `id_category`:
 
-- **Ejemplo**: `/api/products?name=galleta&id_category=1`
+- **Ejemplo**: `/api/product?name=galleta&id_category=1`
 
 ### Ordenación
 
@@ -61,8 +61,50 @@ Puedes ordenar los productos por diferentes campos utilizando los parámetros `s
 - **sort_by**: Campo por el cual ordenar (por ejemplo, `name`, `cost`, `id_category`, `created_at`).
 - **sort_order**: Orden de la consulta (`asc` para ascendente o `desc` para descendente).
 
-- **Ejemplo**: `/api/products?sort_by=name&sort_order=asc`
+- **Ejemplo**: `/api/product?sort_by=name&sort_order=asc`
 
+### Crear un nuevo producto
+
+Para crear un nuevo producto, envía una solicitud `POST` al endpoint `/api/product` con el siguiente JSON en el cuerpo de la solicitud:
+
+**Solicitud**
+
+```bash
+curl -X POST http://localhost/api/product \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "Nuevo Producto",
+           "description": "Descripción del nuevo producto",
+           "cost": "99.99",
+           "quantity": 10,
+           "id_category": "1",
+           "status": true,
+           "date": "2024-08-05"
+         }'
+```
+
+### Actualizar un producto 
+
+Para Actualizar un producto, envia una solicitud `PUT` al endpoint `api/product/{id}` con el siguiente JSON en el cuerpo de la solicitud:
+
+**Solicitud**
+
+```bash
+curl -X PUT http://localhost/api/product/1 \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "pepsi",
+           "description": "Producto actualizado",
+           "cost": "99.99",
+           "quantity": 10,
+           "id_category": "1",
+           "status": true,
+           "date": "2024-08-05"
+         }'
+```
+### Eliminar producto ☠️
+
+Para Eliminar un producto, envia una solicitud `DELETE` al endpoint `api/product/{id}` 
 
 
 ### Categorías
@@ -73,3 +115,30 @@ Puedes ordenar los productos por diferentes campos utilizando los parámetros `s
 | POST        | `/api/category`  | Crea una nueva categoría        |
 
 
+## Estructura de la Base de Datos
+
+La base de datos utilizada en este proyecto está compuesta por las siguientes tablas principales:
+
+### Tabla `product`
+
+| Columna      | Tipo          | Descripción                          |
+|--------------|---------------|--------------------------------------|
+| `id`          | `unsignedBigInteger` | Identificador único del producto (PK) |
+| `name`        | `string`       | Nombre del producto                  |
+| `cost`        | `decimal`      | Costo del producto                   |
+| `id_category` | `unsignedBigInteger` | Identificador de la categoría (FK)  |
+| `created_at`  | `timestamp`    | Fecha de creación del producto       |
+| `updated_at`  | `timestamp`    | Fecha de la última actualización     |
+
+### Tabla `categories`
+
+| Columna      | Tipo          | Descripción                           |
+|--------------|---------------|---------------------------------------|
+| `id`          | `unsignedBigInteger` | Identificador único de la categoría (PK) |
+| `name`        | `string`       | Nombre de la categoría                |
+| `created_at`  | `timestamp`    | Fecha de creación de la categoría     |
+| `updated_at`  | `timestamp`    | Fecha de la última actualización      |
+
+### Relaciones
+
+- **Productos y Categorías**: Cada producto está asociado a una categoría a través del campo `id_category`, que es una clave foránea referenciando el campo `id` en la tabla `categories`.
