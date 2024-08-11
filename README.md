@@ -7,60 +7,69 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## API RESTful para Gestión de Productos y Categorías en Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este proyecto es una API RESTful desarrollada con Laravel, diseñada para facilitar la gestión de productos y categorías en una aplicación. La API permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre dos entidades principales: productos y categorías.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Características 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Gestión de Productos: Permite crear, leer, actualizar y eliminar productos. Cada producto está asociado a una categoría, lo que facilita su organización y filtrado
+- Gestión de Categorías: Facilita la creación, lectura, actualización y eliminación de categorías, proporcionando una estructura para organizar los productos.
+- Endpoints RESTful: La API está construida siguiendo principios RESTful, ofreciendo una interfaz intuitiva para interactuar con los datos.
+- Autenticación: (Opcional) Puede incluir autenticación y autorización para proteger los recursos y garantizar que solo los usuarios autorizados puedan realizar ciertas acciones.
 
-## Learning Laravel
+## Tecnologías Utilizadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel: Un framework PHP para construir aplicaciones web robustas y escalables.
+- MySQL: Sistema de gestión de bases de datos utilizado para almacenar los datos de productos y categorías.
+- Composer: Herramienta para gestionar las dependencias de PHP.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Endpoints de la API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+A continuación se detallan los endpoints disponibles en la API, organizados por recurso y método HTTP:
 
-## Laravel Sponsors
+### Productos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+| Método HTTP | Endpoint                  | Descripción                                     |
+|-------------|---------------------------|-------------------------------------------------|
+| GET         | `/api/products`           | Obtiene una lista de productos con opciones de filtrado y paginación |
+| GET         | `/api/products/{id}`       | Obtiene un producto específico por ID           |
+| POST        | `/api/products`           | Crea un nuevo producto                          |
+| PUT         | `/api/products/{id}`       | Actualiza un producto por ID                   |
+| DELETE      | `/api/products/{id}`       | Elimina un producto por ID                     |
 
-### Premium Partners
+## Consultas Avanzadas para Productos
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+El endpoint `/api/products` admite consultas avanzadas para personalizar la respuesta:
 
-## Contributing
+### Paginación
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Para obtener productos paginados, puedes utilizar los parámetros `page` y `per_page`:
 
-## Code of Conduct
+- **Ejemplo**: `/api/products?page=2&per_page=10`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Filtros
 
-## Security Vulnerabilities
+Puedes filtrar productos por nombre y categoría utilizando los parámetros `name` e `id_category`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Ejemplo**: `/api/products?name=galleta&id_category=1`
 
-## License
+### Ordenación
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Puedes ordenar los productos por diferentes campos utilizando los parámetros `sort_by` y `sort_order`:
+
+- **sort_by**: Campo por el cual ordenar (por ejemplo, `name`, `cost`, `id_category`, `created_at`).
+- **sort_order**: Orden de la consulta (`asc` para ascendente o `desc` para descendente).
+
+- **Ejemplo**: `/api/products?sort_by=name&sort_order=asc`
+
+
+
+### Categorías
+
+| Método HTTP | Endpoint         | Descripción                     |
+|-------------|------------------|---------------------------------|
+| GET         | `/api/category`  | Obtiene una lista de categorías |
+| POST        | `/api/category`  | Crea una nueva categoría        |
+
+
